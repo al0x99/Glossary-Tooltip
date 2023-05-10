@@ -30,6 +30,19 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             )
         );
+        
+        $this->add_control(
+            'glossary_tooltip_shortcode',
+            array(
+                'type' => \Elementor\Controls_Manager::RAW_HTML,
+                'separator' => 'before',
+                'content_classes' => 'glossary-tooltip-shortcode',
+                'raw' => __('
+                    <label for="glossary_tooltip_shortcode">{{{ settings.glossary_tooltip_id || settings.glossary_tooltip_term ? "Lo shortcode del termine selezionato:" : "Inserisci un ID o un termine del glossario per generare lo shortcode." }}}</label>
+                    <input type="text" id="glossary_tooltip_shortcode" readonly value=\'[glossary id="{{{ settings.glossary_tooltip_id }}}" term="{{{ settings.glossary_tooltip_term }}}"]\'>
+                '),
+            )
+        );
 
         $this->add_control(
             'glossary_tooltip_id',
