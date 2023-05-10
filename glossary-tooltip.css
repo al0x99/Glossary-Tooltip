@@ -1,0 +1,25 @@
+.glossary-term {
+    position: relative;
+    cursor: help;
+    text-decoration: underline;
+    color: inherit;
+}
+
+.glossary-term::after {
+    content: attr(title);
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background: #333;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 1000;
+}
+
+.glossary-term:hover::after {
+    display: block;
+}

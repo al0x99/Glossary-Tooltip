@@ -102,41 +102,19 @@ function glossary_tooltip_options_page_html() {
     <?php
 }
 
+// Registra e mette in coda il tuo file CSS
+function glossary_tooltip_enqueue_styles() {
+    wp_register_style('glossary-tooltip', plugins_url('glossary-tooltip.css', __FILE__));
+    wp_enqueue_style('glossary-tooltip');
+}
+add_action('wp_enqueue_scripts', 'glossary_tooltip_enqueue_styles');
+
+
 // Aggiunge i CSS personalizzati per le tooltip in base alle opzioni del plugin
 function glossary_tooltip_css() {
     $bg_color = get_option('glossary_tooltip_bg_color', '#333');
     $text_color = get_option('glossary_tooltip_text_color', '#fff');
     $font_size = get_option('glossary_tooltip_font_size', '14px');
-
-    echo '
-    <style>
-    .glossary-term {
-        position: relative;
-        cursor: help;
-        text-decoration: underline;
-        color: inherit;
-    }
-    
-    .glossary-term::after {
-        content: attr(title);
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 5px;
-        background: ' . esc_attr($bg_color) . ';
-        color: ' . esc_attr($text_color) . ';
-        white-space: nowrap;
-        font-size: ' . esc_attr($font_size) . ';
-        z-index: 1000;
-    }
-    
-    .glossary-term:hover::after {
-        display: block;
-    }
-    </style>
-    ';
 }
 add_action('wp_head', 'glossary_tooltip_css');
 
@@ -156,3 +134,4 @@ function glossary_tooltip_elementor() {
     });
 }
 add_action('init', 'glossary_tooltip_elementor');
+
