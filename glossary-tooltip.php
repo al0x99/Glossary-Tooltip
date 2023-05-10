@@ -11,6 +11,21 @@ Author: Alin Sfirschi
 // Includi il file per creare il meta box personalizzato
 require_once plugin_dir_path(__FILE__) . 'glossary-metabox.php';
 
+function glossary_tooltip() {
+    register_post_type('glossary_term',
+        array(
+            'labels' => array(
+                'name' => 'Termini del Glossario',
+                'singular_name' => 'Termine del Glossario'
+            ),
+            'public' => true,
+            'has_archive' => 'glossario',
+            'supports' => array('title', 'editor')
+        )
+    );
+}
+add_action('init', 'glossary_tooltip');
+
 
 // Registra lo shortcode per i termini del glossario tramite metabox
 function glossary_shortcode($atts) {
