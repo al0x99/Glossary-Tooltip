@@ -137,6 +137,18 @@ function glossary_tooltip_css() {
     }
     </style>
     ';
+
+    echo '
+    h1 .glossary-term::after,
+    h2 .glossary-term::after,
+    h3 .glossary-term::after,
+    h4 .glossary-term::after,
+    h5 .glossary-term::after,
+    h6 .glossary-term::after {
+        white-space: normal;
+        max-width: 250px;
+    }
+    ';
 }
 add_action('wp_head', 'glossary_tooltip_css');
 
