@@ -2,7 +2,7 @@
 /*
 Plugin Name: Glossary Tooltip
 Description: Un semplice plugin per creare tooltip di glossario in Elementor
-Version: 1.1.1
+Version: 1.2dev
 Author: Alin Sfirschi
 */
 
