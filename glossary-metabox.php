@@ -4,7 +4,7 @@ function glossary_tooltip_register_meta_boxes($meta_boxes) {
   $meta_boxes[] = array(
     'title' => 'Termine del Glossario',
     'id' => 'glossary_term_meta_box',
-    'post_types' => array('glossary_term'),
+    'post_types' => array('post'),
     'context' => 'normal',
     'priority' => 'high',
     'autosave' => true,
