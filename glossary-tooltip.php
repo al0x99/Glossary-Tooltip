@@ -2,7 +2,7 @@
 /*
 Plugin Name: Glossary Tooltip
 Description: Un semplice plugin per creare tooltip di glossario in Elementor
-Version: 1.1
+Version: 1.1.1
 Author: Alin Sfirschi
 */
 
@@ -135,10 +135,7 @@ function glossary_tooltip_css() {
     .glossary-term:hover::after {
         display: block;
     }
-    </style>
-    ';
 
-    echo '
     h1 .glossary-term::after,
     h2 .glossary-term::after,
     h3 .glossary-term::after,
@@ -148,8 +145,10 @@ function glossary_tooltip_css() {
         white-space: normal;
         max-width: 250px;
     }
+    </style>
     ';
 }
+
 add_action('wp_head', 'glossary_tooltip_css');
 
 // Carica l'editor di Elementor e registra il nostro widget personalizzato
