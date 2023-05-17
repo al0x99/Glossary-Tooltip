@@ -61,7 +61,7 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             array(
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
                 'content_classes' => 'glossary_tooltip_shortcode',
-                'raw' => '<input id="glossary_tooltip_shortcode" readonly><button id="glossary_tooltip_copy">Copia Shortcode</button>',
+                'raw' => '<input id="glossary_tooltip_shortcode" readonly>',
             )
         );
         
@@ -69,12 +69,6 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             ?>
             <script>
             jQuery(document).ready(function($) {
-                $('#glossary_tooltip_copy').on('click', function() {
-                    var copyText = document.getElementById("glossary_tooltip_shortcode");
-                    copyText.select();
-                    document.execCommand("copy");
-                    alert("Shortcode copiato: " + copyText.value);
-                });
                 $('select[data-setting=glossary_tooltip_term_select]').on('change', function() {
                     var id = $(this).val();
                     $('#glossary_tooltip_shortcode').val('[glossary id="' + id + '"]');
