@@ -31,7 +31,7 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             )
         );
-        
+
         // Ottiene tutti i termini del glossario
         $glossary_terms = get_posts(array(
             'post_type' => 'glossary_term',
@@ -55,28 +55,35 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
                 'placeholder' => __('Seleziona un termine del glossario', 'glossary-tooltip'),
             )
         );
-            
+
+        $this->add_control(
+            'glossary_tooltip_shortcode',
+            array(
+                'type' => \Elementor\Controls_Manager::RAW_HTML,
+                'content_classes' => 'glossary_tooltip_shortcode',
+                'raw' => '<input id="glossary_tooltip_shortcode" readonly><button id="glossary_tooltip_copy">Copia Shortcode</button>',
+            )
+        );
         
-
-
-        // $this->add_control(
-        //     'glossary_tooltip_id',
-        //     array(
-        //         'label' => __('ID', 'glossary-tooltip'),
-        //         'type' => \Elementor\Controls_Manager::TEXT,
-        //         'input_type' => 'number',
-        //         'placeholder' => __('Inserisci l\'ID del termine del glossario', 'glossary-tooltip'),
-        //     )
-        // );
-
-        // $this->add_control(
-        //     'glossary_tooltip_term',
-        //     array(
-        //         'label' => __('Termine', 'glossary-tooltip'),
-        //         'type' => \Elementor\Controls_Manager::TEXT,
-        //         'placeholder' => __('Inserisci il titolo del termine del glossario', 'glossary-tooltip'),
-        //     )
-        // );
+        add_action('elementor/frontend/after_enqueue_scripts', function() {
+            ?>
+            <script>
+            jQuery(document).ready(function($) {
+                $('#glossary_tooltip_copy').on('click', function() {
+                    var copyText = document.getElementById("glossary_tooltip_shortcode");
+                    copyText.select();
+                    document.execCommand("copy");
+                    alert("Shortcode copiato: " + copyText.value);
+                });
+                $('select[data-setting=glossary_tooltip_term_select]').on('change', function() {
+                    var id = $(this).val();
+                    $('#glossary_tooltip_shortcode').val('[glossary id="' + id + '"]');
+                });
+            });
+            </script>
+            <?php
+        });
+        
 
         $this->end_controls_section();
     }
