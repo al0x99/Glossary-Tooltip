@@ -56,18 +56,6 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
                 'placeholder' => __('Seleziona un termine del glossario', 'glossary-tooltip'),
             )
         );
-
-        $this->add_control(
-            'glossary_tooltip_term_select',
-            array(
-                'label' => __('Termine', 'glossary-tooltip'),
-                'type' => \Elementor\Controls_Manager::SELECT2,
-                'options' => $glossary_term_options,
-                'multiple' => false,
-                'label_block' => true,
-                'placeholder' => __('Seleziona un termine del glossario', 'glossary-tooltip'),
-            )
-        );
         
         $this->add_control(
             'glossary_tooltip_shortcode',
@@ -78,21 +66,6 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             )
         );
         
-        add_action('elementor/editor/after_enqueue_scripts', function() {
-            ?>
-            <script>
-            jQuery(document).ready(function($) {
-                elementor.channels.editor.on('change', function(view) {
-                    var id = view.model.attributes.settings.attributes.glossary_tooltip_term_select;
-                    $('#glossary_tooltip_shortcode').val('[glossary id="' + id + '"]');
-                });
-            });
-            </script>
-            <?php
-        });
-        
-        
-
         $this->end_controls_section();
     }
 
@@ -102,8 +75,30 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
         if ($settings['glossary_tooltip_term_select']) {
             echo do_shortcode('[glossary id="' . esc_attr($settings['glossary_tooltip_term_select']) . '"]');
         }
+        
+        ?>
+        <script>
+        jQuery(document).ready(function($) {
+            var shortcodeInput = $('#glossary_tooltip_shortcode');
+
+            function updateShortcode() {
+                var selectedTermId = '<?php echo esc_js($settings['glossary_tooltip_term_select']); ?>';
+                var shortcode = '[glossary id="' + selectedTermId + '"]';
+                shortcodeInput.val(shortcode);
+            }
+
+            updateShortcode();
+
+            <?php if (defined('ELEMENTOR_VERSION')) : ?>
+                // Aggiorna lo shortcode nell'editor Elementor
+                elementor.channels.editor.on('change', function(view) {
+                    updateShortcode();
+                });
+            <?php endif; ?>
+        });
+        </script>
+        <?php
     }
-    
 
     protected function _content_template() {
         ?>
