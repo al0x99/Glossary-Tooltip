@@ -23,6 +23,33 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
     }
 
     protected function _register_controls() {
+        
+        // Ottiene tutti i termini del glossario
+        $glossary_terms = get_posts(array(
+            'post_type' => 'glossary_term',
+            'numberposts' => -1
+        ));
+
+        // Prepara un array di termini del glossario per il controllo della casella di selezione
+        $glossary_term_options = array();
+        foreach ($glossary_terms as $term) {
+            $glossary_term_options[$term->ID] = $term->post_title;
+        }
+
+        $this->add_control(
+            'glossary_tooltip_term_select',
+            array(
+                'label' => __('Termine', 'glossary-tooltip'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => $glossary_term_options,
+                'multiple' => false,
+                'label_block' => true,
+                'placeholder' => __('Seleziona un termine del glossario', 'glossary-tooltip'),
+            )
+        );
+            
+        
+        
         $this->start_controls_section(
             'glossary_tooltip_section',
             array(
@@ -31,44 +58,41 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             )
         );
 
-        $this->add_control(
-            'glossary_tooltip_id',
-            array(
-                'label' => __('ID', 'glossary-tooltip'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'input_type' => 'number',
-                'placeholder' => __('Inserisci l\'ID del termine del glossario', 'glossary-tooltip'),
-            )
-        );
+        // $this->add_control(
+        //     'glossary_tooltip_id',
+        //     array(
+        //         'label' => __('ID', 'glossary-tooltip'),
+        //         'type' => \Elementor\Controls_Manager::TEXT,
+        //         'input_type' => 'number',
+        //         'placeholder' => __('Inserisci l\'ID del termine del glossario', 'glossary-tooltip'),
+        //     )
+        // );
 
-        $this->add_control(
-            'glossary_tooltip_term',
-            array(
-                'label' => __('Termine', 'glossary-tooltip'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __('Inserisci il titolo del termine del glossario', 'glossary-tooltip'),
-            )
-        );
+        // $this->add_control(
+        //     'glossary_tooltip_term',
+        //     array(
+        //         'label' => __('Termine', 'glossary-tooltip'),
+        //         'type' => \Elementor\Controls_Manager::TEXT,
+        //         'placeholder' => __('Inserisci il titolo del termine del glossario', 'glossary-tooltip'),
+        //     )
+        // );
 
         $this->end_controls_section();
     }
 
     protected function render() {
         $settings = $this->get_settings_for_display();
-        $id = $settings['glossary_tooltip_id'];
-        $term = $settings['glossary_tooltip_term'];
-
-        if ($id || $term) {
-            echo do_shortcode('[glossary id="' . esc_attr($id) . '" term="' . esc_attr($term) . '"]');
+    
+        if ($settings['glossary_tooltip_term_select']) {
+            echo do_shortcode('[glossary id="' . esc_attr($settings['glossary_tooltip_term_select']) . '"]');
         }
     }
+    
 
     protected function _content_template() {
         ?>
-        <# if (settings.glossary_tooltip_id || settings.glossary_tooltip_term) {
-            var id = settings.glossary_tooltip_id || '';
-            var term = settings.glossary_tooltip_term || '';
-            var shortcode = '[glossary id="' + id + '" term="' + term + '"]';
+        <# if (settings.glossary_tooltip_term_select) {
+            var shortcode = '[glossary id="' + settings.glossary_tooltip_term_select + '"]';
             print(shortcode);
         } #>
         <?php
