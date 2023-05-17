@@ -44,6 +44,7 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             $glossary_term_options[$term->ID] = $term->post_title;
         }
 
+        
         $this->add_control(
             'glossary_tooltip_term_select',
             array(
@@ -55,6 +56,28 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
                 'placeholder' => __('Seleziona un termine del glossario', 'glossary-tooltip'),
             )
         );
+
+        $this->add_control(
+            'glossary_tooltip_shortcode',
+            array(
+                'type' => \Elementor\Controls_Manager::RAW_HTML,
+                'content_classes' => 'glossary_tooltip_shortcode',
+                'raw' => '<input id="glossary_tooltip_shortcode" readonly>',
+            )
+        );
+        
+        add_action('elementor/frontend/after_enqueue_scripts', function() {
+            ?>
+            <script>
+            jQuery(document).ready(function($) {
+                $('select[data-setting=glossary_tooltip_term_select]').on('change', function() {
+                    var id = $(this).val();
+                    $('#glossary_tooltip_shortcode').val('[glossary id="' + id + '"]');
+                });
+            });
+            </script>
+            <?php
+        });
 
         $this->add_control(
             'glossary_tooltip_shortcode',
