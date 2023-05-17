@@ -65,7 +65,7 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             )
         );
         
-        add_action('elementor/frontend/after_enqueue_scripts', function() {
+        add_action('elementor/editor/after_enqueue_scripts', function() {
             ?>
             <script>
             jQuery(document).ready(function($) {
