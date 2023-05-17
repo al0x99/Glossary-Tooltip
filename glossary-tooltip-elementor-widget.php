@@ -23,6 +23,14 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
     }
 
     protected function _register_controls() {
+                
+        $this->start_controls_section(
+            'glossary_tooltip_section',
+            array(
+                'label' => __('Glossary Tooltip', 'glossary-tooltip'),
+                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+            )
+        );
         
         // Ottiene tutti i termini del glossario
         $glossary_terms = get_posts(array(
@@ -49,14 +57,7 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
         );
             
         
-        
-        $this->start_controls_section(
-            'glossary_tooltip_section',
-            array(
-                'label' => __('Glossary Tooltip', 'glossary-tooltip'),
-                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-            )
-        );
+
 
         // $this->add_control(
         //     'glossary_tooltip_id',
