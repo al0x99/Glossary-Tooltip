@@ -13,7 +13,7 @@ function glossary_tooltip() {
                 'singular_name' => 'Termine del Glossario'
             ),
             'public' => true,
-            'has_archive' => true,
+            'has_archive' => false,
             'supports' => array('title', 'editor'),
             'rewrite' => array('slug' => 'glossario'),
         )
