@@ -127,38 +127,9 @@ add_action('init', 'glossary_tooltip_elementor');
 
 function glossary_tooltip_archive_template($template) {
     if (is_post_type_archive('glossary_term')) {
-        $elementor_template_id = 5685; 
-        
-        $source = new \Elementor\TemplateLibrary\Source_Local();
-        $elementor_template = $source->get_data(['template_id' => $elementor_template_id]);
-       
-        if ($elementor_template) {
-            // Utilizza il template di Elementor come base
-            $template = $elementor_template['content'];
-
-            // Qui integra il tuo custom loop del glossario nel template di Elementor,
-            // sostituendo eventuali placeholder che hai inserito nel template di Elementor
-            $args = array(
-                'post_type' => 'glossary_term',
-                'orderby' => 'title',
-                'order' => 'ASC'
-            );
-            $glossary_query = new WP_Query($args);
-            $glossary_html = '';
-            if ($glossary_query->have_posts()) {
-                $glossary_html .= '<div id="glossary-container">';
-                while ($glossary_query->have_posts()) {
-                    $glossary_query->the_post();
-                    $glossary_html .= '<h2 id="' . get_the_ID() . '"><a href="#' . get_the_ID() . '">' . get_the_title() . '</a></h2>';
-                    $glossary_html .= get_the_content();
-                }
-                $glossary_html .= '</div>';
-            } else {
-                $glossary_html .= '<p>Nessun termine del glossario trovato.</p>';
-            }
-
-            // Sostituisci il placeholder nel template di Elementor con il tuo contenuto HTML del glossario
-            $template = str_replace('<!-- your_placeholder_here -->', $glossary_html, $template);
+        $plugin_template = plugin_dir_path(__FILE__) . 'archive-glossary_term.php';
+        if (file_exists($plugin_template)) {
+            return $plugin_template;
         }
     }
     return $template;

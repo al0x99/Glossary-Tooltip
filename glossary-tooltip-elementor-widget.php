@@ -1,4 +1,5 @@
 <?php
+// Verifica se l'editor Elementor è attivo
 if (!did_action('elementor/loaded')) {
     return;
 }
@@ -31,11 +32,13 @@ class Glossary_Tooltip_Elementor_Widget extends \Elementor\Widget_Base {
             )
         );
 
+        // Ottiene tutti i termini del glossario
         $glossary_terms = get_posts(array(
             'post_type' => 'glossary_term',
             'numberposts' => -1
         ));
 
+        // Prepara un array di termini del glossario per il controllo della casella di selezione
         $glossary_term_options = array();
         foreach ($glossary_terms as $term) {
             $glossary_term_options[$term->ID] = $term->post_title;
