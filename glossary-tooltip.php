@@ -1,8 +1,7 @@
 <?php
 /*
-Plugin Name: Glossary Tooltip
-Description: Un semplice plugin per creare tooltip di glossario in Elementor
-Version: 2.0
+Plugin Name: Glossario White Paper
+Version: 2.1
 Author: Alin Sfirschi
 */
 
@@ -55,7 +54,6 @@ function glossary_tooltip_options_page() {
 add_action('admin_menu', 'glossary_tooltip_options_page');
 
 function glossary_tooltip_options_page_html() {
-    // Verifica i permessi
     if (!current_user_can('manage_options')) {
         return;
     }
