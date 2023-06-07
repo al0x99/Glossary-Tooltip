@@ -16,16 +16,14 @@ function glossary_tooltip() {
             'public' => true,
             'has_archive' => true,
             'supports' => array('title', 'editor'),
-            'rewrite' => array('slug' => 'glossario'),  // Aggiungi questa riga
+            'rewrite' => array('slug' => 'glossario'),
         )
     );
 }
 
 add_action('init', 'glossary_tooltip');
 
-// shortcode
 function glossary_shortcode($atts) {
-    // Estrae gli attributi dello shortcode
     $atts = shortcode_atts(
         array(
             'id' => '', 
@@ -44,38 +42,32 @@ function glossary_shortcode($atts) {
     }
 
     if ($post) {
-        $url = get_permalink($post->ID);
+        $url = get_site_url() . '/glossario#' . $post->post_name;
         return '<a href="' . $url . '" class="glossary-term" title="' . $post->post_content . '">' . $post->post_title . '</a>';
     }
 }
 add_shortcode('glossary', 'glossary_shortcode');
 
-// Aggiunge l'interfaccia di amministrazione per le opzioni del plugin
+
 function glossary_tooltip_options_page() {
     add_options_page('Opzioni Tooltip Glossario', 'Tooltip Glossario', 'manage_options', 'glossary-tooltip', 'glossary_tooltip_options_page_html');
 }
 add_action('admin_menu', 'glossary_tooltip_options_page');
 
-// Mostra il contenuto della pagina delle opzioni del plugin
 function glossary_tooltip_options_page_html() {
     // Verifica i permessi
     if (!current_user_can('manage_options')) {
         return;
     }
-
-    // Salva le opzioni se il modulo è stato inviato
     if (isset($_POST['glossary_tooltip_options_nonce']) && wp_verify_nonce($_POST['glossary_tooltip_options_nonce'], 'glossary_tooltip_options')) {
         update_option('glossary_tooltip_bg_color', sanitize_text_field($_POST['glossary_tooltip_bg_color']));
         update_option('glossary_tooltip_text_color', sanitize_text_field($_POST['glossary_tooltip_text_color']));
         update_option('glossary_tooltip_font_size', sanitize_text_field($_POST['glossary_tooltip_font_size']));
     }
-
-    // Ricava le opzioni dal database
     $bg_color = get_option('glossary_tooltip_bg_color', '#333');
     $text_color = get_option('glossary_tooltip_text_color', '#fff');
     $font_size = get_option('glossary_tooltip_font_size', '14px');
 
-    // Mostra il modulo delle opzioni
     ?>
     <div class="wrap">
         <h1>Opzioni Tooltip Glossario</h1>
@@ -100,16 +92,12 @@ function glossary_tooltip_options_page_html() {
     </div>
     <?php
 }
-
-// Registra e mette in coda il tuo file CSS
 function glossary_tooltip_enqueue_styles() {
     wp_register_style('glossary-tooltip', plugins_url('glossary-tooltip.css', __FILE__));
     wp_enqueue_style('glossary-tooltip');
 }
 add_action('wp_enqueue_scripts', 'glossary_tooltip_enqueue_styles');
 
-
-// Aggiunge i CSS personalizzati per le tooltip in base alle opzioni del plugin
 function glossary_tooltip_css() {
     $bg_color = get_option('glossary_tooltip_bg_color', '#333');
     $text_color = get_option('glossary_tooltip_text_color', '#fff');
@@ -117,25 +105,21 @@ function glossary_tooltip_css() {
 }
 add_action('wp_head', 'glossary_tooltip_css');
 
-// Carica l'editor di Elementor e registra il nostro widget personalizzato
 function glossary_tooltip_elementor() {
-    // Verifica se l'editor Elementor è attivo
     if (\Elementor\Plugin::instance()->editor->is_edit_mode()) {
         wp_enqueue_script(
             'glossary-tooltip-js',
-            plugin_dir_url(__FILE__) . 'glossary-tooltip.js',  // Modifica con il percorso corretto del tuo file JS
+            plugin_dir_url(__FILE__) . 'glossary-tooltip.js',  
             array('jquery'),
             '1.0.0',
             true
         );
     }
 
-    // Carica il file PHP contenente la classe del nostro widget personalizzato
     require_once plugin_dir_path(__FILE__) . 'glossary-tooltip-elementor-widget.php';
 
-    // Registra il widget personalizzato in Elementor
     add_action('elementor/widgets/widgets_registered', function($widgets_manager) {
         $widgets_manager->register_widget_type(new Glossary_Tooltip_Elementor_Widget());
     });
-} // Aggiungi questa parentesi graffa per chiudere la funzione
+}
 add_action('init', 'glossary_tooltip_elementor');
