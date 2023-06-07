@@ -119,5 +119,7 @@ function glossary_tooltip_elementor() {
         $widgets_manager->register_widget_type(new Glossary_Tooltip_Elementor_Widget());
     });
 }
+
 add_action('init', 'glossary_tooltip_elementor');
 
+}
