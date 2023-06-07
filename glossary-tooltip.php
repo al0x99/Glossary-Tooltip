@@ -44,6 +44,7 @@ function glossary_shortcode($atts) {
         $url = get_permalink(get_page_by_path('glossario')) . '#' . $post->post_name;
         return '<a href="' . $url . '" class="glossary-term" title="' . $post->post_content . '">' . $post->post_title . '</a>';
     }
+}
 add_shortcode('glossary', 'glossary_shortcode');
 
 
@@ -119,7 +120,4 @@ function glossary_tooltip_elementor() {
         $widgets_manager->register_widget_type(new Glossary_Tooltip_Elementor_Widget());
     });
 }
-
 add_action('init', 'glossary_tooltip_elementor');
-
-}
