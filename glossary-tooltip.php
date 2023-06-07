@@ -2,11 +2,10 @@
 /*
 Plugin Name: Glossary Tooltip
 Description: Un semplice plugin per creare tooltip di glossario in Elementor
-Version: 1.1
+Version: 2.0
 Author: Alin Sfirschi
 */
 
-// Registra un nuovo tipo di post personalizzato per i termini del glossario
 function glossary_tooltip() {
     register_post_type('glossary_term',
         array(
@@ -15,26 +14,27 @@ function glossary_tooltip() {
                 'singular_name' => 'Termine del Glossario'
             ),
             'public' => true,
-            'has_archive' => 'glossario',
-            'supports' => array('title', 'editor')
+            'has_archive' => true,
+            'supports' => array('title', 'editor'),
+            'rewrite' => array('slug' => 'glossario'),  // Aggiungi questa riga
         )
     );
 }
+
 add_action('init', 'glossary_tooltip');
 
-// Registra lo shortcode per i termini del glossario
+// shortcode
 function glossary_shortcode($atts) {
     // Estrae gli attributi dello shortcode
     $atts = shortcode_atts(
         array(
-            'id' => '',      // L'ID del termine del glossario
-            'term' => '',    // Il titolo del termine del glossario
+            'id' => '', 
+            'term' => '',
         ),
         $atts,
         'glossary'
     );
 
-    // Ottiene il termine del glossario dal database
     if (!empty($atts['id'])) {
         $post = get_post($atts['id']);
     } elseif (!empty($atts['term'])) {
@@ -43,7 +43,6 @@ function glossary_shortcode($atts) {
         $post = null;
     }
 
-    // Restituisce il termine del glossario con la tooltip
     if ($post) {
         $url = get_permalink($post->ID);
         return '<a href="' . $url . '" class="glossary-term" title="' . $post->post_content . '">' . $post->post_title . '</a>';
@@ -121,9 +120,17 @@ add_action('wp_head', 'glossary_tooltip_css');
 // Carica l'editor di Elementor e registra il nostro widget personalizzato
 function glossary_tooltip_elementor() {
     // Verifica se l'editor Elementor è attivo
-    if (!did_action('elementor/loaded')) {
-        return;
+    if (\Elementor\Plugin::instance()->editor->is_edit_mode()) {
+        wp_enqueue_script(
+            'glossary-tooltip-js',
+            plugin_dir_url(__FILE__) . 'glossary-tooltip.js',  // Modifica con il percorso corretto del tuo file JS
+            array('jquery'),
+            '1.0.0',
+            true
+        );
     }
+}
+
 
     // Carica il file PHP contenente la classe del nostro widget personalizzato
     require_once plugin_dir_path(__FILE__) . 'glossary-tooltip-elementor-widget.php';
