@@ -129,8 +129,6 @@ function glossary_tooltip_elementor() {
             true
         );
     }
-}
-
 
     // Carica il file PHP contenente la classe del nostro widget personalizzato
     require_once plugin_dir_path(__FILE__) . 'glossary-tooltip-elementor-widget.php';
@@ -139,6 +137,5 @@ function glossary_tooltip_elementor() {
     add_action('elementor/widgets/widgets_registered', function($widgets_manager) {
         $widgets_manager->register_widget_type(new Glossary_Tooltip_Elementor_Widget());
     });
-}
+} // Aggiungi questa parentesi graffa per chiudere la funzione
 add_action('init', 'glossary_tooltip_elementor');
-
