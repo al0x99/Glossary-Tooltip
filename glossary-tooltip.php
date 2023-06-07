@@ -41,10 +41,9 @@ function glossary_shortcode($atts) {
     }
 
     if ($post) {
-        $url = get_site_url() . '/glossario#' . $post->post_name;
+        $url = get_permalink(get_page_by_path('glossario')) . '#' . $post->post_name;
         return '<a href="' . $url . '" class="glossary-term" title="' . $post->post_content . '">' . $post->post_title . '</a>';
     }
-}
 add_shortcode('glossary', 'glossary_shortcode');
 
 
