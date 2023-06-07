@@ -123,3 +123,15 @@ function glossary_tooltip_elementor() {
     });
 }
 add_action('init', 'glossary_tooltip_elementor');
+
+
+function glossary_tooltip_archive_template($template) {
+    if (is_post_type_archive('glossary_term')) {
+        $plugin_template = plugin_dir_path(__FILE__) . 'archive-glossary_term.php';
+        if (file_exists($plugin_template)) {
+            return $plugin_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'glossary_tooltip_archive_template');
