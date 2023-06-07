@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Glossario White Paper
-Version: 2.2.2
+Version: 2.2.3
 Author: Alin Sfirschi
 */
 
@@ -13,7 +13,7 @@ function glossary_tooltip() {
                 'singular_name' => 'Termine del Glossario'
             ),
             'public' => true,
-            'has_archive' => false,
+            'has_archive' => true,
             'supports' => array('title', 'editor'),
             'rewrite' => array('slug' => 'glossario'),
         )
