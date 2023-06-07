@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Glossario White Paper
-Version: 2.2.1
+Version: 2.2.2
 Author: Alin Sfirschi
 */
 
